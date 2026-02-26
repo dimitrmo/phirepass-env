@@ -114,13 +114,16 @@ passwd -l root
 echo "Setting up UFW firewall..."
 apt install -y ufw
 
+# Allow SSH (critical - don't lock yourself out!)
+ufw allow 22/tcp
+
 # Allow HTTPS
 ufw allow 443/tcp
 
 # Enable UFW
 ufw --force enable
 
-echo "UFW firewall enabled with port 443 allowed"
+echo "UFW firewall enabled with ports 22 and 443 allowed"
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Verify Installation
