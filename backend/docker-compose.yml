@@ -1,0 +1,32 @@
+services:
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8000:8000"
+      - "8080:8080"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:Z
+    depends_on:
+      - relay
+      - server
+    networks:
+      - phirepass-network
+    restart: unless-stopped
+
+  relay:
+    image: dimitrmok/phirepass-relay:0.1.132
+    env_file: .env
+    networks:
+      - phirepass-network
+    restart: unless-stopped
+
+  server:
+    image: dimitrmok/phirepass-server:0.1.132
+    env_file: .env
+    networks:
+      - phirepass-network
+    restart: unless-stopped
+
+networks:
+  phirepass-network:
