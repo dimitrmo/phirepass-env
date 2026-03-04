@@ -114,6 +114,10 @@ passwd -l root
 echo "Setting up UFW firewall..."
 apt install -y ufw
 
+# Deny everything by default
+ufw default deny incoming
+ufw default allow outgoing
+
 # Allow SSH (critical - don't lock yourself out!)
 ufw allow 22/tcp
 
