@@ -22,12 +22,14 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=phirepass-network"
-      - "--entryPoints.relay.address=:8000"
-      - "--entryPoints.server.address=:8080"
+      - "--entryPoints.relay.address=:6061"
+      - "--entryPoints.server.address=:7071"
 
   relay:
     image: dimitrmok/phirepass-relay:0.1.133
     env_file: .env
+    environment:
+      - PORT=6061
     networks:
       - phirepass-network
     restart: unless-stopped
@@ -35,7 +37,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.relay.rule=PathPrefix(`/`)"
       - "traefik.http.routers.relay.entrypoints=relay"
-      - "traefik.http.services.relay.loadbalancer.server.port=8000"
+      - "traefik.http.services.relay.loadbalancer.server.port=6061"
       - "traefik.http.routers.relay-ws.rule=PathPrefix(`/api/web/ws`)"
       - "traefik.http.routers.relay-ws.entrypoints=relay"
       - "traefik.http.routers.relay-ws.service=relay"
@@ -43,6 +45,8 @@ services:
   server:
     image: dimitrmok/phirepass-server:0.1.133
     env_file: .env
+    environment:
+      - PORT=7071
     networks:
       - phirepass-network
     restart: unless-stopped
@@ -50,7 +54,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.server.rule=PathPrefix(`/`)"
       - "traefik.http.routers.server.entrypoints=server"
-      - "traefik.http.services.server.loadbalancer.server.port=8080"
+      - "traefik.http.services.server.loadbalancer.server.port=7071"
       - "traefik.http.routers.server-ws.rule=PathPrefix(`/api/nodes/ws`)"
       - "traefik.http.routers.server-ws.entrypoints=server"
       - "traefik.http.routers.server-ws.service=server"
