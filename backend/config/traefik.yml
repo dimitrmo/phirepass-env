@@ -11,9 +11,9 @@ entryPoints:
   # web:
     # address: ':80'
   relay:
-    address: ':8000'
+    address: ':6061'
   server:
-    address: ':8080'
+    address: ':7071'
   traefik:
     address: ':8081'
 
