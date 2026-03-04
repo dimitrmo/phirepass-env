@@ -8,8 +8,8 @@ api:
   debug: true
 
 entryPoints:
-  web:
-    address: ':80'
+  # web:
+    # address: ':80'
   relay:
     address: ':8000'
   server:
