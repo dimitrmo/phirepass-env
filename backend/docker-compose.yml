@@ -2,8 +2,10 @@ services:
 
   traefik:
     image: traefik:3.6.9
+    user: "0:0"
+    security_opt:
+      - label=disable
     ports:
-      # - "80:80"
       - "8000:8000"
       - "8080:8080"
       - "8081:8081"
@@ -20,7 +22,6 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=phirepass-network"
-      - "--entryPoints.web.address=:80"
       - "--entryPoints.relay.address=:8000"
       - "--entryPoints.server.address=:8080"
 
@@ -40,7 +41,7 @@ services:
       - "traefik.http.routers.relay-ws.service=relay"
 
   server:
-    image: dimitrmok/phirepass-server:0.1.132
+    image: dimitrmok/phirepass-server:0.1.133
     env_file: .env
     networks:
       - phirepass-network
@@ -56,3 +57,4 @@ services:
 
 networks:
   phirepass-network:
+    name: phirepass-network
