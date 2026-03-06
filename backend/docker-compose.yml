@@ -66,6 +66,10 @@ services:
     environment:
       - PORT=5051
       - SSH_HOST=host.docker.internal
+    volumes:
+      - ./secrets:/secrets:ro
+      - ./scripts/agent-startup.sh:/startup.sh:ro
+    entrypoint: ["/bin/sh", "/startup.sh"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:

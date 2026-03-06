@@ -1,1 +1,6 @@
 .env
+
+# Secrets directory (but keep .example files)
+backend/secrets/*
+!backend/secrets/.gitkeep
+!backend/secrets/*.example
