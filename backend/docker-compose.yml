@@ -22,8 +22,26 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=phirepass-network"
-      - "--entryPoints.relay.address=:6061"
       - "--entryPoints.server.address=:7071"
+      - "--entryPoints.relay.address=:6061"
+      - "--entryPoints.agent.address=:5051"
+
+  server:
+    image: dimitrmok/phirepass-server:0.1.136
+    env_file: .env
+    environment:
+      - PORT=7071
+    networks:
+      - phirepass-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.server.entrypoints=server"
+      - "traefik.http.services.server.loadbalancer.server.port=7071"
+      - "traefik.http.routers.server-ws.rule=PathPrefix(`/api/nodes/ws`)"
+      - "traefik.http.routers.server-ws.entrypoints=server"
+      - "traefik.http.routers.server-ws.service=server"
 
   relay:
     image: dimitrmok/phirepass-relay:0.1.136
@@ -42,22 +60,25 @@ services:
       - "traefik.http.routers.relay-ws.entrypoints=relay"
       - "traefik.http.routers.relay-ws.service=relay"
 
-  server:
-    image: dimitrmok/phirepass-server:0.1.136
+  agent:
+    image: dimitrmok/phirepass-agent:0.1.136
     env_file: .env
     environment:
-      - PORT=7071
+      - PORT=5051
+      - SSH_HOST=host.docker.internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - phirepass-network
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.server.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.server.entrypoints=server"
-      - "traefik.http.services.server.loadbalancer.server.port=7071"
-      - "traefik.http.routers.server-ws.rule=PathPrefix(`/api/nodes/ws`)"
-      - "traefik.http.routers.server-ws.entrypoints=server"
-      - "traefik.http.routers.server-ws.service=server"
+      - "traefik.http.routers.agent.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.agent.entrypoints=agent"
+      - "traefik.http.services.agent.loadbalancer.server.port=5051"
+      - "traefik.http.routers.agent-ws.rule=PathPrefix(`/api/web/ws`)"
+      - "traefik.http.routers.agent-ws.entrypoints=agent"
+      - "traefik.http.routers.agent-ws.service=agent"
 
 networks:
   phirepass-network:

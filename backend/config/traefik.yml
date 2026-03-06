@@ -10,6 +10,8 @@ api:
 entryPoints:
   # web:
     # address: ':80'
+  agent:
+    address: ':5051'
   relay:
     address: ':6061'
   server:
