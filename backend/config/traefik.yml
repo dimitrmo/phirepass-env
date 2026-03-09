@@ -2,6 +2,13 @@ global:
   checkNewVersion: true
   sendAnonymousUsage: false
 
+http:
+  middlewares:
+    xff2xrealip:
+      plugin:
+        xff2xrealip:
+          depth: 0
+
 api:
   insecure: true
   dashboard: true
