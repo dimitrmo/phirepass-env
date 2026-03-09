@@ -36,14 +36,11 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.real-ip.headers.customrequestheaders.X-Real-IP="
       - "traefik.http.routers.server.rule=PathPrefix(`/`)"
       - "traefik.http.routers.server.entrypoints=server"
-      - "traefik.http.routers.server.middlewares=real-ip"
       - "traefik.http.services.server.loadbalancer.server.port=7071"
       - "traefik.http.routers.server-ws.rule=PathPrefix(`/api/nodes/ws`)"
       - "traefik.http.routers.server-ws.entrypoints=server"
-      - "traefik.http.routers.server-ws.middlewares=real-ip"
       - "traefik.http.routers.server-ws.service=server"
 
   relay:
@@ -58,11 +55,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.relay.rule=PathPrefix(`/`)"
       - "traefik.http.routers.relay.entrypoints=relay"
-      - "traefik.http.routers.relay.middlewares=real-ip"
       - "traefik.http.services.relay.loadbalancer.server.port=6061"
       - "traefik.http.routers.relay-ws.rule=PathPrefix(`/api/web/ws`)"
       - "traefik.http.routers.relay-ws.entrypoints=relay"
-      - "traefik.http.routers.relay-ws.middlewares=real-ip"
       - "traefik.http.routers.relay-ws.service=relay"
 
   agent:
@@ -87,11 +82,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.agent.rule=PathPrefix(`/`)"
       - "traefik.http.routers.agent.entrypoints=agent"
-      - "traefik.http.routers.agent.middlewares=real-ip"
       - "traefik.http.services.agent.loadbalancer.server.port=5051"
       - "traefik.http.routers.agent-ws.rule=PathPrefix(`/api/web/ws`)"
       - "traefik.http.routers.agent-ws.entrypoints=agent"
-      - "traefik.http.routers.agent-ws.middlewares=real-ip"
       - "traefik.http.routers.agent-ws.service=agent"
 
 volumes:
