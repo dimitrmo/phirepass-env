@@ -27,7 +27,7 @@ services:
       - "--entryPoints.agent.address=:5051"
 
   server:
-    image: dimitrmok/phirepass-server:0.1.136
+    image: dimitrmok/phirepass-server:0.1.144
     env_file: .env
     environment:
       - PORT=7071
@@ -44,7 +44,7 @@ services:
       - "traefik.http.routers.server-ws.service=server"
 
   relay:
-    image: dimitrmok/phirepass-relay:0.1.136
+    image: dimitrmok/phirepass-relay:0.1.144
     env_file: .env
     environment:
       - PORT=6061
@@ -61,15 +61,14 @@ services:
       - "traefik.http.routers.relay-ws.service=relay"
 
   agent:
-    image: dimitrmok/phirepass-agent:0.1.136
+    image: dimitrmok/phirepass-agent:0.1.144
     env_file: .env
     environment:
       - PORT=5051
       - SSH_HOST=host.docker.internal
     volumes:
       - ./secrets:/secrets:ro
-      - ./scripts/agent-startup.sh:/startup.sh:ro
-    entrypoint: ["/bin/sh", "/startup.sh"]
+    command: ["start", "--token-from-file", "/secrets/access_token.txt"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
