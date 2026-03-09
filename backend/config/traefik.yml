@@ -12,10 +12,28 @@ entryPoints:
     # address: ':80'
   agent:
     address: ':5051'
+    forwardedHeaders:
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "172.16.0.0/12"
+        - "10.0.0.0/8"
+      insecure: false
   relay:
     address: ':6061'
+    forwardedHeaders:
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "172.16.0.0/12"
+        - "10.0.0.0/8"
+      insecure: false
   server:
     address: ':7071'
+    forwardedHeaders:
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "172.16.0.0/12"
+        - "10.0.0.0/8"
+      insecure: false
   traefik:
     address: ':8081'
 
