@@ -27,7 +27,7 @@ services:
       - "--entryPoints.agent.address=:5051"
 
   server:
-    image: dimitrmok/phirepass-server:0.1.147
+    image: dimitrmok/phirepass-server:0.1.149
     env_file: .env
     environment:
       - PORT=7071
@@ -44,7 +44,7 @@ services:
       - "traefik.http.routers.server-ws.service=server"
 
   relay:
-    image: dimitrmok/phirepass-relay:0.1.147
+    image: dimitrmok/phirepass-relay:0.1.149
     env_file: .env
     environment:
       - PORT=6061
@@ -61,7 +61,7 @@ services:
       - "traefik.http.routers.relay-ws.service=relay"
 
   agent:
-    image: dimitrmok/phirepass-agent:0.1.147
+    image: dimitrmok/phirepass-agent:0.1.149
     env_file: .env
     environment:
       - PORT=5051
