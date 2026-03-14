@@ -63,6 +63,8 @@ services:
   agent:
     image: dimitrmok/phirepass-agent:0.1.152
     env_file: .env
+    depends_on:
+      - server
     environment:
       - PORT=5051
       - SSH_HOST=host.docker.internal
